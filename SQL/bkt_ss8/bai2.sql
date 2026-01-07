@@ -22,11 +22,54 @@ from bookings b
 group by b.guest_id
 having count(b.guest_id)>=2;
 
-select b.room_id,count(b.room_id)
+select r.room_type
+from rooms r
+join (
+select b.room_id ma_phong,count(b.room_id)
 from bookings b
 group by b.room_id
-order by count(b.room_id) desc
-limit 1;
+having count(b.room_id) in(select max(t.luot_dat)
+from(
+select b.room_id ma_phong,count(b.room_id) luot_dat
+from bookings b
+group by b.room_id
+) t)
+) t
+on r.room_id=t.ma_phong
+
+;
+-- bai3
+
+select *
+from rooms r
+where r.price_per_day>(select avg(r.price_per_day)
+from rooms r)
+;
+
+select *
+from guests g
+where g.guest_id not in(select  b.guest_id
+from bookings b
+group by b.guest_id)
+;
+
+
+select t.ma_phong ,t.so_luong_dat_phong
+from (
+select b.room_id ma_phong,count(b.room_id) so_luong_dat_phong
+from bookings b
+group by b.room_id
+) t
+where t.so_luong_dat_phong in(
+select max(t.so_luong_dat_phong)
+from (
+select b.room_id,count(b.room_id) so_luong_dat_phong
+from bookings b
+group by b.room_id
+) t
+)
+;
+
 
 
 
