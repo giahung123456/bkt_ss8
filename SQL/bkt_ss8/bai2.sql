@@ -19,10 +19,14 @@ group by b.room_id
 
 select b.guest_id,count(b.guest_id)
 from bookings b
-group by b.guest_id;
+group by b.guest_id
+having count(b.guest_id)>=2;
 
 select b.room_id,count(b.room_id)
 from bookings b
-group by b.room_id;
+group by b.room_id
+order by count(b.room_id) desc
+limit 1
+;
 
 
