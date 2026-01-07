@@ -26,7 +26,7 @@ select b.room_id,count(b.room_id)
 from bookings b
 group by b.room_id
 order by count(b.room_id) desc
-limit 1
-;
+limit 1;
+
 
 
